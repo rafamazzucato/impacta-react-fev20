@@ -62,6 +62,15 @@ export class CadastroCursos extends React.Component {
         .catch(error => console.log(error));
     }
 
+    removerCurso(id){
+        axios.delete(URL+"/"+id)
+        .then(_ => {
+            this.listaCursos();
+            alert('Curso excluído com sucesso!');
+        })
+        .catch(error => console.log(error));
+    }
+
     atualizaCodigo(e){
         this.setState({...this.state, codigo: e.target.value})
     }
@@ -98,12 +107,17 @@ export class CadastroCursos extends React.Component {
                         atualizaCargaHoraria={this.atualizaCargaHoraria.bind(this)}
                         atualizaPreco={this.atualizaPreco.bind(this)}
                         atualizaCategoria={this.atualizaCategoria.bind(this)}
+
                         adicionarCurso={this.adicionarCurso.bind(this)}
                         limparForm={this.limparForm.bind(this)}
+                        
                     />
                 </div>
                 <div className="col-md-6">
-                    <ListaCursos cursos={this.state.cursos} />
+                    <ListaCursos 
+                        cursos={this.state.cursos} 
+                        removerCurso={this.removerCurso.bind(this)}
+                    />
                 </div>
             </div>
         );
