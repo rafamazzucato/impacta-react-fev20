@@ -27,6 +27,7 @@ export class CadastroCursos extends React.Component {
         axios.get(URL)
         .then(response => {
             this.setState({...this.state, cursos: response.data})
+            this.props.atualizaTotal(response.data.length);
         })
         .catch(error => {
             console.log(error);
