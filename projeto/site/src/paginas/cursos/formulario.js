@@ -65,10 +65,8 @@ export const FormularioCursos = props => (
                 </div>
             </div>
             <div className="form-group row">
-                <button
-                    className="btn btn-primary ml-3 mb-3">
-                    Adicionar
-                </button>
+                <button className="btn btn-primary ml-3 mb-3" onClick={props.adicionarCurso}> Adicionar </button>
+                <button className="btn btn-secondary ml-3 mb-3" onClick={props.limparForm}> Limpar </button>
             </div>
         </form>
     </div>

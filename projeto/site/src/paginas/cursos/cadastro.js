@@ -9,11 +9,10 @@ const URL = 'http://localhost:3200/api/cursos';
 export class CadastroCursos extends React.Component {
 
     estadoInicial = {
-        cursos : [],
-        codigo : null,
+        codigo : 0,
         descricao: '',
-        cargaHoraria: null,
-        preco : null,
+        cargaHoraria: 0,
+        preco : 0,
         categoria : 'INFORMATICA'
     }
 
@@ -31,6 +30,30 @@ export class CadastroCursos extends React.Component {
         .catch(error => {
             console.log(error);
         });
+    }
+
+    limparForm(evento){
+        evento.preventDefault();
+        this.setState(this.estadoInicial);
+    }
+
+    adicionarCurso(evento){
+        evento.preventDefault();
+        const {codigo, descricao, cargaHoraria, preco, categoria} = this.state;
+
+        if(codigo === 0 || descricao === '' || cargaHoraria < 4 || preco ===0 ){
+            alert('Dados inválidos verifique');
+            return;
+        }
+
+        const body = { codigo, descricao, cargaHoraria, preco, categoria};
+        axios.post(URL, body)
+        .then(_ => {
+            this.limparForm(evento);
+            this.listaCursos();
+            alert('Curso salvo com sucesso!');
+        })
+        .catch(error => console.log(error));
     }
 
     atualizaCodigo(e){
@@ -69,6 +92,8 @@ export class CadastroCursos extends React.Component {
                         atualizaCargaHoraria={this.atualizaCargaHoraria.bind(this)}
                         atualizaPreco={this.atualizaPreco.bind(this)}
                         atualizaCategoria={this.atualizaCategoria.bind(this)}
+                        adicionarCurso={this.adicionarCurso.bind(this)}
+                        limparForm={this.limparForm.bind(this)}
                     />
                 </div>
                 <div className="col-md-6">
