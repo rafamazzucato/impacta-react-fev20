@@ -149,5 +149,3 @@ export class CadastroCursos extends React.Component {
         );
     }
 }
-
-
