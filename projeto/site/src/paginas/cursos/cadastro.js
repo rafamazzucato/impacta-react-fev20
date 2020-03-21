@@ -33,12 +33,18 @@ export class CadastroCursos extends React.Component {
     }
 
     limparForm(evento){
-        evento.preventDefault();
+        if(evento){
+            evento.preventDefault();
+        }
+
         this.setState(this.estadoInicial);
     }
 
     adicionarCurso(evento){
-        evento.preventDefault();
+        if(evento){
+            evento.preventDefault();
+        }
+        
         const {codigo, descricao, cargaHoraria, preco, categoria} = this.state;
 
         if(codigo === 0 || descricao === '' || cargaHoraria < 4 || preco ===0 ){
@@ -49,7 +55,7 @@ export class CadastroCursos extends React.Component {
         const body = { codigo, descricao, cargaHoraria, preco, categoria};
         axios.post(URL, body)
         .then(_ => {
-            this.limparForm(evento);
+            this.limparForm();
             this.listaCursos();
             alert('Curso salvo com sucesso!');
         })
