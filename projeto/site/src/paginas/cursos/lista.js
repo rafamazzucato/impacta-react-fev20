@@ -8,7 +8,11 @@ export const ListaCursos = props => {
                 <td>{curso.codigo}</td>
                 <td>{curso.descricao}</td>
                 <td>
-                    <button className="btn btn-danger"
+                    <button className="btn btn-success"
+                        onClick={() => props.editarCurso(curso)}>
+                        <i className="fa fa-check"></i>
+                    </button>
+                    <button className="btn btn-danger ml-1"
                         onClick={() => props.removerCurso(curso._id)}>
                         <i className="fa fa-trash-o"></i>
                     </button>

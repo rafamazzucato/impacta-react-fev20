@@ -9,6 +9,7 @@ const URL = 'http://localhost:3200/api/cursos';
 export class CadastroCursos extends React.Component {
 
     estadoInicial = {
+        _id: '',
         codigo : 0,
         descricao: '',
         cargaHoraria: 0,
@@ -40,12 +41,12 @@ export class CadastroCursos extends React.Component {
         this.setState(this.estadoInicial);
     }
 
-    adicionarCurso(evento){
+    adicionarCurso = async(evento) =>{
         if(evento){
             evento.preventDefault();
         }
         
-        const {codigo, descricao, cargaHoraria, preco, categoria} = this.state;
+        const { _id, codigo, descricao, cargaHoraria, preco, categoria} = this.state;
 
         if(codigo === 0 || descricao === '' || cargaHoraria < 4 || preco ===0 ){
             alert('Dados inválidos verifique');
@@ -53,22 +54,45 @@ export class CadastroCursos extends React.Component {
         }
 
         const body = { codigo, descricao, cargaHoraria, preco, categoria};
-        axios.post(URL, body)
-        .then(_ => {
+
+        try{
+            let msg = ''
+            if(_id === ''){
+                await axios.post(URL, body);
+                msg = 'Curso salvo com sucesso!';
+            }else{
+                await axios.put(URL+"/"+_id, body)
+                msg = 'Curso atualizado com sucesso!';
+            }
+
             this.limparForm();
             this.listaCursos();
-            alert('Curso salvo com sucesso!');
-        })
-        .catch(error => console.log(error));
+            alert(msg);
+        }catch(error){
+            console.log(error)
+        }
     }
 
     removerCurso(id){
-        axios.delete(URL+"/"+id)
-        .then(_ => {
-            this.listaCursos();
-            alert('Curso excluído com sucesso!');
-        })
-        .catch(error => console.log(error));
+        if(window.confirm("Deseja realmente excluir o curso selecionado?")){
+            axios.delete(URL+"/"+id)
+            .then(_ => {
+                this.listaCursos();
+                alert('Curso excluído com sucesso!');
+            })
+            .catch(error => console.log(error));
+        }
+    }
+
+    editarCurso(curso){
+        this.setState({...this.state, 
+            _id : curso._id,
+            codigo : curso.codigo, 
+            descricao : curso.descricao,
+            cargaHoraria : curso.cargaHoraria,
+            preco : curso.preco,
+            categoria : curso.categoria
+        });
     }
 
     atualizaCodigo(e){
@@ -96,6 +120,7 @@ export class CadastroCursos extends React.Component {
             <div className="row border-bottom">
                 <div className="col-md-6">
                     <FormularioCursos 
+                        _id={this.state._id}
                         codigo={this.state.codigo}
                         descricao={this.state.descricao}
                         cargaHoraria={this.state.cargaHoraria}
@@ -110,13 +135,13 @@ export class CadastroCursos extends React.Component {
 
                         adicionarCurso={this.adicionarCurso.bind(this)}
                         limparForm={this.limparForm.bind(this)}
-                        
                     />
                 </div>
                 <div className="col-md-6">
                     <ListaCursos 
                         cursos={this.state.cursos} 
                         removerCurso={this.removerCurso.bind(this)}
+                        editarCurso={this.editarCurso.bind(this)}
                     />
                 </div>
             </div>
