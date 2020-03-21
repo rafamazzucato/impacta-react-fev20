@@ -4,9 +4,12 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 
 import {Provider}from 'react-redux';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
+import thunk from'redux-thunk';
 import tabelas from './reducers';
-const store = createStore(tabelas);
+
+const storeWithMiddleware = applyMiddleware(thunk)(createStore);
+const store = storeWithMiddleware(tabelas);
 
 ReactDOM.render(
     <BrowserRouter>
