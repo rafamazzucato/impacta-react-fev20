@@ -1,10 +1,15 @@
 import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 
-export default function HomeScreen() {
+export default function HomeScreen(props) {
   return (
     <View style={styles.container}>
-      <Text>HomeScreen</Text>
+      <Text style={styles.texto}>Página inicial</Text>
+      <View style={styles.botao}>
+        <Button
+          title="Lista de Cursos"
+          onPress={() => props.navigation.navigate('Cursos')} />
+      </View>
     </View>
   );
 }
@@ -12,8 +17,16 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignContent: 'center',
-    justifyContent: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+  }, 
+  texto: {
+    fontSize: 20
   },
+  botao: {
+    width: '100%',
+    height: '30%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }  
 });
