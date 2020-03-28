@@ -31,9 +31,8 @@ export const removerContato = (_id) => {
             if (window.confirm('realmente respondeu este contato?')) {
                 await axios.delete(URL+'/'+_id);
                 alert('Contato respondido com sucesso');
-                return dispatch(limparContatos())
+                return dispatch(listarContatos())
             }
-
         } catch (error) {
             console.log(error)
             alert('Erro ao listar contato')
@@ -45,7 +44,6 @@ export const listarContatos = () => {
     return async (dispatch) => {
         try {
             const response = await axios.get(URL);
-            console.log(response.data);
             return dispatch({
                 type: 'LISTAR_CONTATOS',
                 info: response.data

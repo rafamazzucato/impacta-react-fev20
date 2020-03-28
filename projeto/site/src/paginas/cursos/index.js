@@ -2,7 +2,6 @@ import React from 'react'
 import { Cabecalho } from '../../componentes/cabecalho'
 import { CursoCadastro } from './cadastro'
 
-
 export  class Cursos extends React.Component {
     render(){
         return (

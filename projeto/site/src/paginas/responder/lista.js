@@ -13,7 +13,7 @@ const ListaContatos = props => {
 
     useEffect(()=> {
         listarContatos();
-    }, [listarContatos])
+    }, [listarContatos]);
 
     const exibirLinhas = _ => {
         const contatos = props.contatos || [];
