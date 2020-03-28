@@ -9,6 +9,9 @@ export default function HomeScreen(props) {
         <Button
           title="Lista de Cursos"
           onPress={() => props.navigation.navigate('Cursos')} />
+         <Button
+          title="Envie seu contato"
+          onPress={() => props.navigation.navigate('Contato')} />
       </View>
     </View>
   );
