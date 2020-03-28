@@ -1,20 +1,15 @@
-import React from 'react';
-import { Cabecalho } from '../../componentes/cabecalho';
-import { CadastroCursos } from './cadastro';
+import React from 'react'
+import { Cabecalho } from '../../componentes/cabecalho'
+import { CursoCadastro } from './cadastro'
 
-export class Cursos extends React.Component {
 
-    state = {total : 0}
-
-    atualizaTotal(total){
-        this.setState({...this.state, total});
-    }
-
-    render() {
+export  class Cursos extends React.Component {
+    render(){
         return (
             <div className="container">
-                <Cabecalho titulo="Cursos" subtitulo={"cadastro de cursos. total:" + this.state.total}/>
-                <CadastroCursos atualizaTotal={this.atualizaTotal.bind(this)}/>
+                <Cabecalho titulo="Cursos"
+                    subtitulo=" gerenciamento da plataforma de cursos"></Cabecalho>
+                <CursoCadastro/>
             </div>
         )
     }

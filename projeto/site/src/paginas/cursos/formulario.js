@@ -1,62 +1,116 @@
-import React from 'react';
+import React from 'react'
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
+import {
+    codigoInput,
+    descricaoInput,
+    cargaHorariaInput,
+    precoInput,
+    categoriaInput,
+    adicionarCurso,
+    atualizarCurso,
+    listaCursos
+} from '../../actions/cursos';
 
-export const FormularioCursos = props => (
-    <div className="border-right pl-3 pr-3">
+class FormularioCursos extends React.Component {
+
+    constructor(props){
+        super(props)
+        this.salvaAtualizaCurso = this.salvaAtualizaCurso.bind(this);
+    }
+
+    salvaAtualizaCurso = (e) =>{
+        e.preventDefault();
+
+        const {adicionarCurso, 
+            atualizarCurso, 
+            _id, 
+            codigo, 
+            descricao, 
+            cargaHoraria, 
+            preco, 
+            categoria
+        } = this.props;
+
+        if((!codigo || codigo === 0)
+            || (!descricao || descricao === '')
+            || (!cargaHoraria || cargaHoraria === 0)
+            || (!preco || preco === 0)
+            || (!categoria || categoria === '')){
+                alert('Campos obrigatórios não preenchidos!')
+                return;
+        }
+
+        if(!_id || _id === ''){
+            adicionarCurso(codigo, descricao, cargaHoraria, preco, categoria)
+        }else{
+            atualizarCurso(_id, codigo, descricao, cargaHoraria, preco, categoria)
+        }
+    }
+
+    render(){
+
+        const {msg, codigo, descricao, cargaHoraria, preco, categoria, codigoInput, descricaoInput, cargaHorariaInput, precoInput, categoriaInput} = this.props;
+        const props =this.props;
+
+        if(msg && msg !== ''){
+            alert(msg)
+        }
+
+        return (
+        <div className="border-right pl-3 pr-3">
         <h3 className="border-bottom">Formulário</h3>
         <form>
             <div className="form-group row">
                 <label htmlFor="codigo"
-                    className="col-sm-4 col-form-label">
+                    className="col-sm-3 col-form-label">
                     Código:
-                </label>
-                <div className="col-sm-8">
-                    <input type="number"
-                        className="form-control" id="codigo" 
-                        value={props.codigo} 
-                        onChange={props.atualizaCodigo}/>
+		    </label>
+                <div className="col-sm-9">
+                <input type="number"
+                            className="form-control" id="codigo" value={codigo} onChange={codigoInput} />
                 </div>
             </div>
+
             <div className="form-group row">
-                <label htmlFor="descrição"
-                    className="col-sm-4 col-form-label">
+                <label htmlFor="descricao"
+                    className="col-sm-3 col-form-label">
                     Descrição:
-                </label>
-                <div className="col-sm-8">
+		    </label>
+                <div className="col-sm-9">
                     <input type="text"
-                        className="form-control" id="descricao" 
-                        value={props.descricao}
-                        onChange={props.atualizaDescricao}/>
+                            className="form-control" id="descricao" value={descricao} onChange={descricaoInput} />
                 </div>
             </div>
+
             <div className="form-group row">
                 <label htmlFor="cargaHoraria"
-                    className="col-sm-4 col-form-label">
-                    Carga Horária:</label>
-                <div className="col-sm-8">
-                    <input type="number"
-                        className="form-control" id="cargaHoraria" 
-                        value={props.cargaHoraria} 
-                        onChange={props.atualizaCargaHoraria}/>
+                    className="col-sm-3 col-form-label">
+                    Carga Horária:
+		    </label>
+                <div className="col-sm-9">
+                <input type="number"
+                            className="form-control" id="cargaHoraria" value={cargaHoraria} onChange={cargaHorariaInput} />
                 </div>
             </div>
 
             <div className="form-group row">
                 <label htmlFor="preco"
-                    className="col-sm-4 col-form-label">
-                    Preço:</label>
-                <div className="col-sm-8">
-                    <input type="number"
-                        className="form-control" id="preco" value={props.preco}
-                        onChange={props.atualizaPreco} />
+                    className="col-sm-3 col-form-label">
+                    Preço:
+		    </label>
+                <div className="col-sm-9">
+                <input type="number" className="form-control" id="preco" value={preco} onChange={precoInput} />
                 </div>
             </div>
 
             <div className="form-group row">
-                <label htmlFor="categoria"
-                    className="col-sm-4 col-form-label">Categoria:</label>
-                <div className="col-sm-8">
-                    <select className="form-control" id="categoria" value={props.categoria}
-                        onChange={props.atualizaCategoria} >
+                <label htmlFor="categoria" className="col-sm-3 col-form-label">Categoria:</label>
+                <div className="col-sm-9">
+                    <select className="form-control" id="categoria"
+                        onChange={categoriaInput}
+                        value={categoria}>
+
                         <option>INFORMATICA</option>
                         <option>ENGENHARIA</option>
                         <option>ADMINISTRACAO</option>
@@ -64,10 +118,42 @@ export const FormularioCursos = props => (
                     </select>
                 </div>
             </div>
+
+
             <div className="form-group row">
-                <button className="btn btn-primary ml-3 mb-3" onClick={props.adicionarCurso}>{props._id === '' ? 'Adicionar' : 'Atualizar'}</button>
-                <button className="btn btn-secondary ml-3 mb-3" onClick={props.limparForm}> Limpar </button>
+                <button
+                        className="btn btn-primary ml-3 mb-3" onClick={this.salvaAtualizaCurso}>
+                    { !props._id || props._id === '' ? 'Adicionar' : 'Atualizar' }
+			</button>
             </div>
+
         </form>
-    </div>
-);
+
+        </div>)
+    }
+}
+
+//padrão decorator
+const mapStateToProps = state => ({
+    _id: state.cursos._id,
+    codigo: state.cursos.codigo,
+    descricao: state.cursos.descricao,
+    cargaHoraria: state.cursos.cargaHoraria,
+    preco: state.cursos.preco,
+    categoria : state.cursos.categoria,
+    msg : state.cursos.alertInsertUpdate
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+    codigoInput,
+    descricaoInput,
+    cargaHorariaInput,
+    precoInput,
+    categoriaInput,
+    adicionarCurso,
+    atualizarCurso,
+    listaCursos
+}, dispatch)
+
+const conectado = connect(mapStateToProps, mapDispatchToProps)(FormularioCursos);
+export {conectado as FormularioCursos};
